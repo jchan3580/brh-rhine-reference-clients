@@ -12,14 +12,15 @@ class CallError(Exception):
     pass
 
 class Rhine:
-    conv = staticmethod(lambda es: '(' + ','.join(es) + ')' if type(es) is list else '(' + es + ')')
-    conv_ = staticmethod(lambda es: '(' + ','.join(['(' + ','.join(sub) + ')' for sub in es]) + ')')
+    conv = staticmethod(lambda es: '(' + ','.join(es) + ')' \
+        if type(es) is list else '(' + es + ')')
+    conv_ = staticmethod(lambda es: '(' + ',' \
+        .join(['(' + ','.join(sub) + ')' for sub in es]) + ')')
     
     def __init__(self, api_key):
         self.api_key = api_key
 
     def _call(self, req):
-        print(req)
         response = get('http://api.rhine.io/' + self.api_key + '/' + req)
         try:
             data = response.json()
@@ -30,17 +31,22 @@ class Rhine:
         return data
 
     def distance(self, entity1, entity2):
-        return float(self._call('semantic/distance/{0}/{1}'.format(Rhine.conv(entity1), Rhine.conv(entity2)))['distance'])
+        return float(self._call('semantic/distance/{0}/{1}' \
+            .format(Rhine.conv(entity1), Rhine.conv(entity2)))['distance'])
 
     def best_match(self, tomatch, possibilities, num):
-        response = self._call('semantic/best_match/{0}/{1}/{2}'.format(Rhine.conv(tomatch), Rhine.conv_(possibilities), num))['best_match']
+        response = self._call('semantic/best_match/{0}/{1}/{2}' \
+            .format(Rhine.conv(tomatch), Rhine.conv_(possibilities), num))['best_match']
         return eval(response.replace('NaN', 'float(\'nan\')'))
 
     def synonym_check(self, entity1, entity2):
-        return self._call('synonym_check/{0}/{1}'.format(entity1, entity2))['synonym'] == 'True'
+        return self._call('synonym_check/{0}/{1}' \
+            .format(entity1, entity2))['synonym'] == 'True'
 
     def entity_extraction(self, text):
-        return self._call('entity_extraction/{0}'.format(text))['entities']
+        return self._call('entity_extraction/{0}' \
+            .format(text))['entities']
 
     def closest_entities(self, entity):
-        return self._call('semantic/closest_entities/{0}'.format(entity))['closest_entities']
+        return self._call('semantic/closest_entities/{0}' \
+            .format(entity))['closest_entities']
