@@ -32,7 +32,8 @@ function synonym_check(api_key, entity1, entity2) {
 }
 
 function entity_extraction(api_key, text) {
-    return gen(api_key, "entity_extraction/" + text);
+    return gen(api_key, "entity_extraction/");
+    // Add {'rawText': < text >} as POST data.
 }
 
 function closest_entities(api_key, entity) {

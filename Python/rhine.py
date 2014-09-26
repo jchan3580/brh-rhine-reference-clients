@@ -4,7 +4,7 @@ Required libraries: requests
 Compatible with both Python 2 and Python 3.
 '''
 
-from requests import get
+from requests import get, post
 
 class InvalidRequest(Exception):
     pass
@@ -45,8 +45,8 @@ class Rhine:
             .format(entity1, entity2))['synonym'] == 'True'
 
     def entity_extraction(self, text):
-        return self._call('entity_extraction/{0}' \
-            .format(text))['entities']
+        return post('http://api.rhine.io/' + self.api_key + '/entity_extraction' \
+            , data = {'rawText': text}).json()['entities']
 
     def closest_entities(self, entity):
         return self._call('closest_entities/{0}' \
