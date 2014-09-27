@@ -16,7 +16,7 @@ function _conv2(es) {
 }
 
 function gen(api_key, call) {
-    return "http://api.rhine.io/" + api_key + "/" + call;
+    return "http://api.rhine.io:8080/" + api_key + "/" + call;
 }
 
 function distance(api_key, entity1, entity2) {
