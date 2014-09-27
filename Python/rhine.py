@@ -35,19 +35,13 @@ class Rhine:
         return float(self._call('distance/{0}/{1}' \
             .format(Rhine.conv(entity1), Rhine.conv(entity2)))['distance'])
 
-    def best_match(self, tomatch, possibilities, num):
-        response = self._call('best_match/{0}/{1}/{2}' \
-            .format(Rhine.conv(tomatch), Rhine.conv_(possibilities), num))['best_match']
-        return eval(response.replace('NaN', 'float(\'nan\')'))
-
     def synonym_check(self, entity1, entity2):
         return self._call('synonym_check/{0}/{1}' \
             .format(entity1, entity2))['synonym'] == 'True'
 
     def entity_extraction(self, text):
-        return post('http://api.rhine.io/' + self.api_key + '/entity_extraction' \
-            , data = {'rawText': text}).json()['entities']
-
+        return self._call('entity_extraction/{0}'.format(text))
+            
     def closest_entities(self, entity):
         return self._call('closest_entities/{0}' \
             .format(entity))['closest_entities']
